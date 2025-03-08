@@ -1,3 +1,5 @@
+import { useLocation, NavLink } from "react-router";
+
 import {
   Sidebar,
   SidebarContent,
@@ -8,8 +10,16 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { House, LayoutDashboard, MessageCircleWarning } from "lucide-react";
-import { NavLink } from "react-router";
+import {
+  Award,
+  Calendar,
+  House,
+  Lamp,
+  LayoutDashboard,
+  MessageCircleWarning,
+  User2,
+} from "lucide-react";
+import { Tooltip, TooltipProvider } from "./ui/tooltip";
 
 const items = [
   {
@@ -27,9 +37,31 @@ const items = [
     url: "/complaints",
     icon: MessageCircleWarning,
   },
+  {
+    title: "Events",
+    url: "/events",
+    icon: Calendar,
+  },
+  {
+    title: "Facility",
+    url: "/facilities",
+    icon: Lamp,
+  },
+  {
+    title: "Merit",
+    url: "/merit",
+    icon: Award,
+  },
+  {
+    title: "User",
+    url: "/users",
+    icon: User2,
+  },
 ];
 
 export const MainSidebar = () => {
+  const { pathname } = useLocation();
+
   return (
     <Sidebar collapsible="icon" className="pt-16 border-none z-40">
       <SidebarContent>
@@ -39,7 +71,7 @@ export const MainSidebar = () => {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild isActive={pathname === item.url}>
                     <NavLink to={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
