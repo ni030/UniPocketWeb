@@ -13,15 +13,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
 
-export type Event = {
-  eventId: string;
-  eventName: string;
-  role: "committee" | "participant";
-  category: string;
+export type Complaint = {
+  id: string;
+  status: string;
+  type: string;
   date: string;
 };
 
-export const columns: ColumnDef<Event>[] = [
+export const columns: ColumnDef<Complaint>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -44,21 +43,15 @@ export const columns: ColumnDef<Event>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  // {
-  //   accessorKey: "id",
-  //   header: "Event ID",
-  //   cell: ({ row }) => <div className="font-medium">{row.getValue("id")}</div>,
-  //   enableSorting: true,
-  // },
   {
-    accessorKey: "eventName",
+    accessorKey: "id",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Event Name
+          Complaint Id
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -66,19 +59,23 @@ export const columns: ColumnDef<Event>[] = [
     enableSorting: true,
   },
   {
-    accessorKey: "role",
-    header: "Role",
+    accessorKey: "status",
+    header: "Status",
     cell: ({ row }) => {
-      const role = row.getValue("role") as string;
+      const status = row.getValue("status") as string;
+      const trimStatus = status.trim().toLowerCase();
+
       return (
         <div
           className={
-            role === "committee"
-              ? "text-blue-600 font-medium"
-              : "text-green-600 font-medium"
+            trimStatus === "completed"
+              ? "text-green-600"
+              : trimStatus === "in-progress"
+              ? "text-yellow-600"
+              : "text-red-600"
           }
         >
-          {role.charAt(0).toUpperCase() + role.slice(1)}
+          {status.charAt(0).toUpperCase() + status.slice(1)}
         </div>
       );
     },
@@ -86,14 +83,14 @@ export const columns: ColumnDef<Event>[] = [
     enableSorting: true,
   },
   {
-    accessorKey: "category",
+    accessorKey: "type",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Category
+          Type
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
@@ -129,34 +126,34 @@ export const columns: ColumnDef<Event>[] = [
     },
     enableSorting: true,
   },
-  {
-    id: "actions",
-    header: "Actions",
-    cell: ({ row }) => {
-      const event = row.original;
+  // {
+  //   id: "actions",
+  //   header: "Actions",
+  //   cell: ({ row }) => {
+  //     const event = row.original;
 
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(event.eventId)}
-            >
-              Copy event ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View event details</DropdownMenuItem>
-            <DropdownMenuItem>Edit event</DropdownMenuItem>
-            <DropdownMenuItem>Manage participants</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
+  //     return (
+  //       <DropdownMenu>
+  //         <DropdownMenuTrigger asChild>
+  //           <Button variant="ghost" className="h-8 w-8 p-0">
+  //             <span className="sr-only">Open menu</span>
+  //             <MoreHorizontal className="h-4 w-4" />
+  //           </Button>
+  //         </DropdownMenuTrigger>
+  //         <DropdownMenuContent align="end">
+  //           <DropdownMenuLabel>Actions</DropdownMenuLabel>
+  //           <DropdownMenuItem
+  //             onClick={() => navigator.clipboard.writeText(event.eventId)}
+  //           >
+  //             Copy event ID
+  //           </DropdownMenuItem>
+  //           <DropdownMenuSeparator />
+  //           <DropdownMenuItem>View event details</DropdownMenuItem>
+  //           <DropdownMenuItem>Edit event</DropdownMenuItem>
+  //           <DropdownMenuItem>Manage participants</DropdownMenuItem>
+  //         </DropdownMenuContent>
+  //       </DropdownMenu>
+  //     );
+  //   },
+  // },
 ];
