@@ -2,14 +2,14 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { config } from "@/lib/config";
 
-export const useGetEvents = () => {
+export const useGetComplaints = () => {
   const query = useQuery({
-    queryKey: ["events"],
+    queryKey: ["complaints"],
     queryFn: async () => {
-      const response = await axios.get(`${config.API_URL}/events`);
+      const response = await axios.get(`${config.API_URL}/complaints`);
 
       if (response.status !== 200) {
-        throw new Error("An error occurred while fetching events");
+        throw new Error("An error occurred while fetching complaints");
       }
 
       return response.data;
