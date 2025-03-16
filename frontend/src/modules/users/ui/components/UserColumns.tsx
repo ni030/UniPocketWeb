@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, DoorOpen, Hotel, Mail, Phone, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -43,41 +43,94 @@ export const columns: ColumnDef<Room>[] = [
   },
   {
     accessorKey: "name",
-    header: "Name",
-    cell: ({ row }) => <div>{row.getValue("name")}</div>,
+    header: ({ column }) => {
+      return (
+        <div className="flex items-center justify-center">
+          <User className="h-5 w-5 mr-1" />
+          Name
+        </div>
+      );
+    },
+    cell: ({ row }) => <div className="text-center">{row.getValue("name")}</div>,
     enableSorting: true,
   },
   {
     accessorKey: "email",
-    header: "Email",
-    cell: ({ row }) => <div>{row.getValue("email")}</div>,
+    header: ({ column }) => {
+      return (
+        <div className="flex items-center justify-center">
+          <Mail className="h-5 w-5 mr-1" />
+          Email
+        </div>
+      );
+    },
+    cell: ({ row }) => <div className="text-center">{row.getValue("email")}</div>,
     enableSorting: true,
   },
   {
     accessorKey: "phoneNum",
-    header: "Phone Number",
-    cell: ({ row }) => <div>{row.getValue("phoneNum")}</div>,
+    header: ({ column }) => {
+      return (
+        <div className="flex items-center justify-center">
+          <Phone className="h-5 w-5 mr-1" />
+          Phone Number
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      const phoneNum = row.getValue("phoneNum") as string;
+      return (
+        <div className="text-center">
+          {phoneNum}
+        </div>
+      )
+    },
+
     enableSorting: true,
   },
   {
     accessorKey: "block",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Block
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+        <div className="flex items-center justify-center">
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            <Hotel className="h-5 w-5" />
+            Block
+          </Button>
+        </div>
       );
+    },
+    cell: ({ row }) => {
+      const block = row.getValue("block") as string;
+      return (
+        <div className="text-center">
+          {block}
+        </div>
+      )
     },
     enableSorting: true,
   },
   {
     accessorKey: "room",
-    header: "Room Number",
-    cell: ({ row }) => <div>{row.getValue("room")}</div>,
+    header: ({ column }) => {
+      return (
+        <div className="flex items-center justify-center">
+          <DoorOpen className="h-5 w-5" />
+          Room Number
+        </div>
+      );
+    },
+    cell: ({ row }) => {
+      const room = row.getValue("room") as string;
+      return (
+        <div className="text-center">
+          {room}
+        </div>
+      )
+    },
     enableSorting: true,
-  }
+  },
 ];

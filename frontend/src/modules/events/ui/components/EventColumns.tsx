@@ -1,17 +1,18 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Calendar, MoreHorizontal } from "lucide-react";
 import { ArrowUpDown } from "lucide-react";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
+import QRCode from "react-qr-code"
+import { useState } from "react";
+import { ResponsiveDialog } from "@/components/ResponsiveDialog";
 
 export type Event = {
   eventId: string;
@@ -44,25 +45,17 @@ export const columns: ColumnDef<Event>[] = [
     enableSorting: false,
     enableHiding: false,
   },
-  // {
-  //   accessorKey: "id",
-  //   header: "Event ID",
-  //   cell: ({ row }) => <div className="font-medium">{row.getValue("id")}</div>,
-  //   enableSorting: true,
-  // },
   {
     accessorKey: "eventName",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Event Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Event Name
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
     enableSorting: true,
   },
   {
@@ -87,34 +80,30 @@ export const columns: ColumnDef<Event>[] = [
   },
   {
     accessorKey: "category",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Category
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Category
+        <ArrowUpDown className="ml-2 h-4 w-4" />
+      </Button>
+    ),
     filterFn: "equals",
     enableSorting: true,
   },
   {
     accessorKey: "date",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="flex justify-between items-center"
-        >
-          Date
-          <Calendar className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        className="flex justify-between items-center"
+      >
+        Date
+        <Calendar className="ml-2 h-4 w-4" />
+      </Button>
+    ),
     cell: ({ row }) => {
       const dateStr = row.getValue("date") as string;
       // Format date to a more readable version
@@ -134,28 +123,41 @@ export const columns: ColumnDef<Event>[] = [
     header: "Actions",
     cell: ({ row }) => {
       const event = row.original;
+      const [showQRModal, setShowQRModal] = useState(false);
+
+      const handleGenerateQR = () => {
+        setShowQRModal(true);
+      };
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(event.eventId)}
+        <>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem onClick={handleGenerateQR}>
+                Generate QR
+              </DropdownMenuItem>
+              <DropdownMenuItem>Edit event</DropdownMenuItem>
+              <DropdownMenuItem>Delete event</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+          {showQRModal && (
+            <ResponsiveDialog
+              open={showQRModal}
+              onOpenChange={setShowQRModal}
+              title={event.eventName}
             >
-              Copy event ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View event details</DropdownMenuItem>
-            <DropdownMenuItem>Edit event</DropdownMenuItem>
-            <DropdownMenuItem>Manage participants</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+              <QRCode value={JSON.stringify(event)} />
+            </ResponsiveDialog>
+          )}
+        </>
       );
     },
   },

@@ -23,7 +23,7 @@ export const ResponsiveDialog = ({
 }: ResponsiveDialogProps) => {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="flex flex-col justify-center items-center">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           {description && <DialogDescription>{description}</DialogDescription>}

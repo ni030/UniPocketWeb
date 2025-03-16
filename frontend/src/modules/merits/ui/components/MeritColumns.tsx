@@ -1,7 +1,8 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
+import { TrendingUpDown, SquareSigma } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useOpenUserDialog } from "@/hooks/use-open-user-dialog";
 
 export type Merit = {
   id: string;
@@ -37,29 +38,58 @@ export const columns: ColumnDef<Merit>[] = [
     enableHiding: false,
   },
   {
-    accessorFn: (row) => row.user?.name || "No User", // Extract user.name manually
+    accessorFn: (row) => row.user?.name || "No User",
     id: "user.name",
     header: "User Name",
-    cell: ({ row }) => <div>{row.original.user?.name ?? "No User"}</div>,
     enableSorting: true,
-    filterFn: (row, columnId, filterValue)  => {
+    filterFn: (row, columnId, filterValue) => {
       return row.original.user?.name
         ?.toLowerCase()
         .includes(filterValue.toLowerCase());
+    },
+    cell: ({ row }) => {
+      const userId = row.original.user?.userId as string;
+      console.log("userId", userId);
+      const { onOpen } = useOpenUserDialog();
+
+      const handleOpenDialog = () => {
+        onOpen(userId);
+      };
+
+      return (
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleOpenDialog}
+            className="text-blue-500 underline hover:text-blue-700 cursor-pointer"
+          >
+            {row.getValue("user.name")}
+          </button>
+        </div>
+      );
     },
   },
   {
     accessorKey: "totalMerits",
     header: ({ column }) => {
       return (
-        <Button
+        <div className="flex items-center justify-center">
+          <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
+          <SquareSigma className="h-5 w-5" />
           Total Merits
-          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
+        </div>
       );
+    },
+    cell: ({ row }) => {
+      const totalMerits = row.getValue("totalMerits") as number;
+      return (
+        <div className="text-center">
+          {totalMerits}
+        </div>
+      )
     },
     enableSorting: true,
   },
@@ -67,14 +97,24 @@ export const columns: ColumnDef<Merit>[] = [
     accessorKey: "ranking",
     header: ({ column }) => {
       return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Ranking
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
+        <div className="flex items-center justify-center">
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            <TrendingUpDown className="h-5 w-5" />
+            Ranking
+          </Button>
+        </div>
       );
+    },
+    cell: ({ row }) => {
+      const ranking = row.getValue("ranking") as number;
+      return (
+        <div className="text-center">
+          {ranking}
+        </div>
+      )
     },
     enableSorting: true,
   },
