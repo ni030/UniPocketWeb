@@ -24,9 +24,37 @@ export const userController = {
         .where("userId", "==", userId)
         .get();
       const user = userSnapshot.docs.map((doc) => doc.data())[0];
+
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
       res.status(200).json(user);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
   },
+  // getUserById: async (req, res) => {
+  //   const { userId } = req.params;
+  //   try {
+  //     const userSnapshot = await db
+  //       .collection("users")
+  //       .where("userId", "==", userId)
+  //       .get();
+  //     const user = userSnapshot.data();
+  //     res.status(200).json(user);
+  //   } catch (error) {
+  //     res.status(500).json({ error: error.message });
+  //   }
+  //   try {
+  //     const userSnapshot = await db
+  //       .collection("users")
+  //       .doc(req.params.id)
+  //       .get();
+  //     const user = userSnapshot.data();
+  //     res.status(200).json(user);
+  //   } catch (error) {
+  //     res.status(500).json({ error: error.message });
+  //   }
+  // },
 };
