@@ -21,6 +21,9 @@ import {
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { DataTablePagination } from "@/components/DataPagination";
+import { Button } from "@/components/ui/button";
+import { PlusCircleIcon } from "lucide-react";
+import { useCreateEventDialog } from "../../hooks/use-create-event-dialog";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -34,6 +37,8 @@ export function EventDataTable<TData, TValue>({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState({});
+
+  const { onOpen } = useCreateEventDialog();
 
   const table = useReactTable({
     data,
@@ -54,7 +59,7 @@ export function EventDataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex items-center py-4">
+      <div className="flex justify-between items-center py-4">
         <Input
           placeholder="Filter event name..."
           value={
@@ -65,6 +70,11 @@ export function EventDataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
+
+        <Button variant="outline" onClick={onOpen}>
+          <PlusCircleIcon />
+            Add Event
+        </Button>
       </div>
       <div className="rounded-md border">
         <Table>

@@ -13,9 +13,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import QRCode from "react-qr-code"
 import { useState } from "react";
 import { ResponsiveDialog } from "@/components/ResponsiveDialog";
+import { useOpenEventDialog } from "../../hooks/use-open-event-dialog";
+import { useConfirm } from "@/hooks/use-confirm";
+import { useDeleteEvent } from "../../hooks/use-delete-event";
 
 export type Event = {
-  eventId: string;
+  id: string;
   eventName: string;
   role: "committee" | "participant";
   category: string;
@@ -129,8 +132,29 @@ export const columns: ColumnDef<Event>[] = [
         setShowQRModal(true);
       };
 
+      const id = row.original.id as string;
+      const { onOpen } = useOpenEventDialog();
+      const deleteEvent = useDeleteEvent();
+
+      const [ConfirmationDialog, confirm] = useConfirm(
+        "Delete Event",
+        "Are you sure you want to delete this event?"
+      );
+
+      const handleEdit = () => {
+        onOpen(id);
+      }
+
+      const handleDelete = async () => {
+        const ok = await confirm();
+        if (ok) {
+          deleteEvent.mutate(id);
+        }
+      }
+
       return (
         <>
+        <ConfirmationDialog />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0">
@@ -143,8 +167,8 @@ export const columns: ColumnDef<Event>[] = [
               <DropdownMenuItem onClick={handleGenerateQR}>
                 Generate QR
               </DropdownMenuItem>
-              <DropdownMenuItem>Edit event</DropdownMenuItem>
-              <DropdownMenuItem>Delete event</DropdownMenuItem>
+              <DropdownMenuItem onClick={handleEdit}>Edit event</DropdownMenuItem>
+              <DropdownMenuItem onClick={handleDelete}>Delete event</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
