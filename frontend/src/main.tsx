@@ -4,6 +4,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
 import { BrowserRouter, Route, Routes } from "react-router";
+import { Toaster } from "sonner";
 
 import { QueryProvider } from "./providers/query-provider.tsx";
 
@@ -18,6 +19,7 @@ import UserPage from "./pages/UserPage.tsx";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryProvider>
+      <Toaster richColors />
       <BrowserRouter>
         <Routes>
           {/* Root Layout */}

@@ -1,5 +1,12 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Calendar, MoreHorizontal } from "lucide-react";
+import {
+  Calendar,
+  CloudLightning,
+  DropletIcon,
+  Lightbulb,
+  MoreHorizontal,
+  Wrench,
+} from "lucide-react";
 import { ArrowUpDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -12,6 +19,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useOpenUserDialog } from "@/hooks/use-open-user-dialog";
+import { useState } from "react";
+import { ResponsiveDialog } from "@/components/ResponsiveDialog";
+import { ImagePreview } from "./ImagePreview";
+import { cn } from "@/lib/utils";
+import { useUpdateComplaint } from "../../hooks/use-update-complaint";
 
 export type Complaint = {
   id: string;
@@ -59,27 +72,72 @@ export const columns: ColumnDef<Complaint>[] = [
     enableSorting: true,
   },
   {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => {
-      const status = row.getValue("status") as string;
-      const trimStatus = status.trim().toLowerCase();
-
+    accessorKey: "description",
+    header: ({ column }) => {
       return (
-        <div
-          className={
-            trimStatus === "completed"
-              ? "text-green-600"
-              : trimStatus === "in-progress"
-              ? "text-yellow-600"
-              : "text-red-600"
-          }
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          {status.charAt(0).toUpperCase() + status.slice(1)}
-        </div>
+          Description
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
       );
     },
-    filterFn: "equals",
+    enableSorting: true,
+  },
+  {
+    accessorKey: "status",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Status
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
+    cell: ({ row }) => {
+      const updateStatus = useUpdateComplaint(row.original.id);
+
+      const status = row.getValue("status") as string;
+      const statusTypes = ["Received", "In-progress", "Completed", "Cancelled"];
+      const trimStatus = status.trim().toLowerCase();
+
+      const statusColor =
+        trimStatus === "completed"
+          ? "text-green-500 hover:text-green-400"
+          : trimStatus === "in-progress"
+          ? "text-yellow-500 hover:text-yellow-400"
+          : trimStatus === "cancelled"
+          ? "text-red-500 hover:text-red-400"
+          : "text-blue-500 hover:text-blue-400";
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              className={cn("flex items-center gap-2", statusColor)}
+            >
+              {status.charAt(0).toUpperCase() + status.slice(1)}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            {statusTypes.map((type) => (
+              <DropdownMenuItem
+                key={type}
+                onClick={() => updateStatus?.mutate(type)}
+              >
+                {type}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
     enableSorting: true,
   },
   {
@@ -95,8 +153,47 @@ export const columns: ColumnDef<Complaint>[] = [
         </Button>
       );
     },
+    cell: ({ row }) => {
+      const type = row.getValue("type") as string;
+
+      return (
+        <div className="flex gap-2 items-center">
+          {type === "Electricity" ? (
+            <CloudLightning />
+          ) : type === "Water" ? (
+            <DropletIcon className="fill-blue-100" />
+          ) : (
+            <Wrench />
+          )}
+          <div>{type.charAt(0).toUpperCase() + type.slice(1)}</div>
+        </div>
+      );
+    },
     filterFn: "equals",
     enableSorting: true,
+  },
+  {
+    accessorKey: "userId",
+    header: "Complainant",
+    cell: ({ row }) => {
+      const userId = row.getValue("userId") as string;
+      const { onOpen } = useOpenUserDialog();
+
+      const handleOpenDialog = () => {
+        onOpen(userId);
+      };
+
+      return (
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleOpenDialog}
+            className="text-blue-500 underline hover:text-blue-700 cursor-pointer"
+          >
+            View Details
+          </button>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "date",
@@ -125,6 +222,36 @@ export const columns: ColumnDef<Complaint>[] = [
       return <div className="font-medium">{formatted}</div>;
     },
     enableSorting: true,
+  },
+  {
+    accessorKey: "image",
+    header: "Evidence",
+    cell: ({ row }) => {
+      const [preview, setPreview] = useState(false);
+      const image = row.getValue("image") as string;
+
+      return (
+        <>
+          <ResponsiveDialog
+            open={preview}
+            onOpenChange={setPreview}
+            title="Complaint Evidence"
+          >
+            <ImagePreview src={image} alt="Complaint evidence" />
+          </ResponsiveDialog>
+          <button
+            onClick={() => setPreview(true)}
+            className="flex items-center gap-2 cursor-pointer"
+          >
+            <img
+              src={image}
+              alt="Complaint evidence"
+              className="h-10 w-10 object-cover rounded-lg"
+            />
+          </button>
+        </>
+      );
+    },
   },
   // {
   //   id: "actions",
