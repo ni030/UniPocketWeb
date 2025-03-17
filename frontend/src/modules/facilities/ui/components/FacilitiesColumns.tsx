@@ -1,33 +1,16 @@
 import { ColumnDef } from "@tanstack/react-table";
 import {
-  Calendar,
-  CloudLightning,
   DropletIcon,
   Edit2Icon,
-  GlassWaterIcon,
-  Lightbulb,
   Locate,
-  MapPinHouse,
-  MoreHorizontal,
   Store,
   Trash2Icon,
-  Wrench,
 } from "lucide-react";
 import { ArrowUpDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Separator } from "@/components/ui/separator";
 import { useOpenFacilityDialog } from "../../hooks/use-open-facility-dialog";
-import { FacilityDialog } from "./FacilityDialog";
 import { useDeleteFacility } from "../../hooks/use-delete-facility";
 import { useConfirm } from "@/hooks/use-confirm";
 
@@ -115,60 +98,6 @@ export const facilitiesColumns: ColumnDef<Facilities>[] = [
       );
     },
   },
-  // {
-  //   accessorKey: "status",
-  //   header: ({ column }) => {
-  //     return (
-  //       <Button
-  //         variant="ghost"
-  //         onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //       >
-  //         Status
-  //         <ArrowUpDown className="ml-2 h-4 w-4" />
-  //       </Button>
-  //     );
-  //   },
-  //   cell: ({ row }) => {
-  //     const updateStatus = useUpdateComplaint(row.original.id);
-
-  //     const status = row.getValue("status") as string;
-  //     const statusTypes = ["Received", "In-progress", "Completed", "Cancelled"];
-  //     const trimStatus = status.trim().toLowerCase();
-
-  //     const statusColor =
-  //       trimStatus === "completed"
-  //         ? "text-green-500 hover:text-green-400"
-  //         : trimStatus === "in-progress"
-  //         ? "text-yellow-500 hover:text-yellow-400"
-  //         : trimStatus === "cancelled"
-  //         ? "text-red-500 hover:text-red-400"
-  //         : "text-blue-500 hover:text-blue-400";
-
-  //     return (
-  //       <DropdownMenu>
-  //         <DropdownMenuTrigger asChild>
-  //           <Button
-  //             variant="ghost"
-  //             className={cn("flex items-center gap-2", statusColor)}
-  //           >
-  //             {status.charAt(0).toUpperCase() + status.slice(1)}
-  //           </Button>
-  //         </DropdownMenuTrigger>
-  //         <DropdownMenuContent>
-  //           {statusTypes.map((type) => (
-  //             <DropdownMenuItem
-  //               key={type}
-  //               onClick={() => updateStatus?.mutate(type)}
-  //             >
-  //               {type}
-  //             </DropdownMenuItem>
-  //           ))}
-  //         </DropdownMenuContent>
-  //       </DropdownMenu>
-  //     );
-  //   },
-  //   enableSorting: true,
-  // },
   {
     accessorKey: "type",
     header: ({ column }) => {
@@ -203,7 +132,7 @@ export const facilitiesColumns: ColumnDef<Facilities>[] = [
   },
   {
     accessorKey: "actions",
-    header: ({ column }) => {
+    header: () => {
       return <p className="flex justify-center">Actions</p>;
     },
     cell: ({ row }) => {

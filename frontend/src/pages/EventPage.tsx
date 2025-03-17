@@ -11,11 +11,11 @@ const EventPage = () => {
   return (
     <div className="max-w-[2400px] mx-auto w-full px-8">
       <AddEventDialog />
-      <EventDialog  />
+      <EventDialog />
       {isLoading ? (
-      <TableSkeleton rows={10} columns={5} />
+        <TableSkeleton rows={10} columns={5} />
       ) : (
-        <EventDataTable data={events} columns={columns} />
+        <EventDataTable data={(events as any) || []} columns={columns} />
       )}
     </div>
   );

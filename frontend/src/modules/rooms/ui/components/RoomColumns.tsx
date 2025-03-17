@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, DoorOpen, Hotel, TrendingUpDown } from "lucide-react";
+import { DoorOpen, Hotel, TrendingUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useOpenUserDialog } from "@/hooks/use-open-user-dialog";
@@ -11,7 +11,7 @@ export type Room = {
   user: {
     userId: string;
     name: string;
-  },
+  };
   ranking: number;
 };
 
@@ -43,7 +43,7 @@ export const columns: ColumnDef<Room>[] = [
     id: "user.name",
     header: "User Name",
     enableSorting: true,
-    filterFn: (row, columnId, filterValue) => {
+    filterFn: (row, _, filterValue) => {
       return row.original.user?.name
         ?.toLowerCase()
         .includes(filterValue.toLowerCase());
@@ -86,11 +86,7 @@ export const columns: ColumnDef<Room>[] = [
     },
     cell: ({ row }) => {
       const ranking = row.getValue("ranking") as number;
-      return (
-        <div className="text-center">
-          {ranking}
-        </div>
-      )
+      return <div className="text-center">{ranking}</div>;
     },
     enableSorting: true,
   },
@@ -111,20 +107,15 @@ export const columns: ColumnDef<Room>[] = [
     },
     cell: ({ row }) => {
       const block = row.getValue("block") as string;
-      return (
-        <div className="text-center">
-          {block}
-        </div>
-      )
+      return <div className="text-center">{block}</div>;
     },
     enableSorting: true,
   },
   {
     accessorKey: "roomNum",
-    header: ({ column }) => {
+    header: () => {
       return (
         <div className="flex items-center justify-center">
-          
           <DoorOpen className="h-5 w-5" />
           Room Number
         </div>
@@ -132,13 +123,8 @@ export const columns: ColumnDef<Room>[] = [
     },
     cell: ({ row }) => {
       const roomNum = row.getValue("roomNum") as string;
-      return (
-        <div className="text-center">
-          {roomNum}
-        </div>
-      )
+      return <div className="text-center">{roomNum}</div>;
     },
     enableSorting: true,
   },
-  
 ];

@@ -42,7 +42,7 @@ export const columns: ColumnDef<Merit>[] = [
     id: "user.name",
     header: "User Name",
     enableSorting: true,
-    filterFn: (row, columnId, filterValue) => {
+    filterFn: (row, _, filterValue) => {
       return row.original.user?.name
         ?.toLowerCase()
         .includes(filterValue.toLowerCase());
@@ -74,22 +74,18 @@ export const columns: ColumnDef<Merit>[] = [
       return (
         <div className="flex items-center justify-center">
           <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          <SquareSigma className="h-5 w-5" />
-          Total Merits
-        </Button>
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            <SquareSigma className="h-5 w-5" />
+            Total Merits
+          </Button>
         </div>
       );
     },
     cell: ({ row }) => {
       const totalMerits = row.getValue("totalMerits") as number;
-      return (
-        <div className="text-center">
-          {totalMerits}
-        </div>
-      )
+      return <div className="text-center">{totalMerits}</div>;
     },
     enableSorting: true,
   },
@@ -110,13 +106,8 @@ export const columns: ColumnDef<Merit>[] = [
     },
     cell: ({ row }) => {
       const ranking = row.getValue("ranking") as number;
-      return (
-        <div className="text-center">
-          {ranking}
-        </div>
-      )
+      return <div className="text-center">{ranking}</div>;
     },
     enableSorting: true,
   },
-  
 ];

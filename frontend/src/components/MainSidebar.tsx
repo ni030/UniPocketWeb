@@ -19,7 +19,6 @@ import {
   MessageCircleWarning,
   User2,
 } from "lucide-react";
-import { Tooltip, TooltipProvider } from "./ui/tooltip";
 
 const items = [
   {

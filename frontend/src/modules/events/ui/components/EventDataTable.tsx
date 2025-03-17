@@ -73,7 +73,7 @@ export function EventDataTable<TData, TValue>({
 
         <Button variant="outline" onClick={onOpen}>
           <PlusCircleIcon />
-            Add Event
+          Add Event
         </Button>
       </div>
       <div className="rounded-md border">

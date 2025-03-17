@@ -1,5 +1,5 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown, DoorOpen, Hotel, Mail, Phone, User } from "lucide-react";
+import { DoorOpen, Hotel, Mail, Phone, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -43,7 +43,7 @@ export const columns: ColumnDef<Room>[] = [
   },
   {
     accessorKey: "name",
-    header: ({ column }) => {
+    header: () => {
       return (
         <div className="flex items-center justify-center">
           <User className="h-5 w-5 mr-1" />
@@ -51,12 +51,14 @@ export const columns: ColumnDef<Room>[] = [
         </div>
       );
     },
-    cell: ({ row }) => <div className="text-center">{row.getValue("name")}</div>,
+    cell: ({ row }) => (
+      <div className="text-center">{row.getValue("name")}</div>
+    ),
     enableSorting: true,
   },
   {
     accessorKey: "email",
-    header: ({ column }) => {
+    header: () => {
       return (
         <div className="flex items-center justify-center">
           <Mail className="h-5 w-5 mr-1" />
@@ -64,12 +66,14 @@ export const columns: ColumnDef<Room>[] = [
         </div>
       );
     },
-    cell: ({ row }) => <div className="text-center">{row.getValue("email")}</div>,
+    cell: ({ row }) => (
+      <div className="text-center">{row.getValue("email")}</div>
+    ),
     enableSorting: true,
   },
   {
     accessorKey: "phoneNum",
-    header: ({ column }) => {
+    header: () => {
       return (
         <div className="flex items-center justify-center">
           <Phone className="h-5 w-5 mr-1" />
@@ -79,11 +83,7 @@ export const columns: ColumnDef<Room>[] = [
     },
     cell: ({ row }) => {
       const phoneNum = row.getValue("phoneNum") as string;
-      return (
-        <div className="text-center">
-          {phoneNum}
-        </div>
-      )
+      return <div className="text-center">{phoneNum}</div>;
     },
 
     enableSorting: true,
@@ -105,17 +105,13 @@ export const columns: ColumnDef<Room>[] = [
     },
     cell: ({ row }) => {
       const block = row.getValue("block") as string;
-      return (
-        <div className="text-center">
-          {block}
-        </div>
-      )
+      return <div className="text-center">{block}</div>;
     },
     enableSorting: true,
   },
   {
     accessorKey: "room",
-    header: ({ column }) => {
+    header: () => {
       return (
         <div className="flex items-center justify-center">
           <DoorOpen className="h-5 w-5" />
@@ -125,11 +121,7 @@ export const columns: ColumnDef<Room>[] = [
     },
     cell: ({ row }) => {
       const room = row.getValue("room") as string;
-      return (
-        <div className="text-center">
-          {room}
-        </div>
-      )
+      return <div className="text-center">{room}</div>;
     },
     enableSorting: true,
   },

@@ -5,7 +5,7 @@ import { UserDialog } from "@/modules/complaints/ui/components/UserDialog";
 import { TableSkeleton } from "@/components/TableSkeleton";
 
 const ComplaintPage = () => {
-  const { data: complaints, isLoading, isError } = useGetComplaints();
+  const { data: complaints, isLoading } = useGetComplaints();
   // const { isOpen, onClose } = useOpenUserDialog();
 
   if (isLoading) {

@@ -4,8 +4,8 @@ import { columns } from "@/modules/merits/ui/components/MeritColumns";
 import { MeritDataTable } from "@/modules/merits/ui/components/MeritDataTable";
 
 const MeritPage = () => {
-  const { data: merits, isLoading, isError } = useGetMerits();
-  
+  const { data: merits, isLoading } = useGetMerits();
+
   if (isLoading) {
     return <div>Loading...</div>;
   }

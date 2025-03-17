@@ -12,15 +12,14 @@ import {
   StoreIcon,
   UserIcon,
 } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
 import { EventChart } from "@/modules/dashboard/components/EventChart";
 
 const DashboardPage = () => {
   const { data: complaints, isLoading: complaintsLoading } = useGetComplaints();
-  const { data: users, isLoading: usersLoading } = useGetUsers();
+  const { data: users } = useGetUsers();
   const { data: merits, isLoading: meritsLoading } = useGetMerits();
   const { data: events, isLoading: eventsLoading } = useGetEvents();
-  const { data: facilities, isLoading: facilitiesLoading } = useGetFacilities();
+  const { data: facilities } = useGetFacilities();
 
   return (
     <div className="max-w-[2400px] mx-auto w-full px-8 py-6 space-y-2">

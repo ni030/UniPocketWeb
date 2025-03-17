@@ -3,7 +3,7 @@ import { columns } from "@/modules/users/ui/components/UserColumns";
 import { UserDataTable } from "@/modules/users/ui/components/UserDataTable";
 
 const UserPage = () => {
-  const { data: users, isLoading, isError } = useGetUsers();
+  const { data: users, isLoading } = useGetUsers();
 
   if (isLoading) {
     return <div>Loading...</div>;

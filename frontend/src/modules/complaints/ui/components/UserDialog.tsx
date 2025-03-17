@@ -33,7 +33,7 @@ const DetailItem = ({ icon: Icon, value }: DetailItemProps) => {
 
 export const UserDialog = () => {
   const { id, onClose, isOpen } = useOpenUserDialog();
-  const { data: user, isLoading, isError } = useGetUser(id);
+  const { data: user, isLoading } = useGetUser(id);
 
   if (!id) {
     return null;

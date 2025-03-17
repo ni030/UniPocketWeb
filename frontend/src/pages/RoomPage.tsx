@@ -4,7 +4,7 @@ import { RoomDataTable } from "@/modules/rooms/ui/components/RoomDataTable";
 import { UserDialog } from "@/modules/complaints/ui/components/UserDialog";
 
 const RoomPage = () => {
-  const { data: rooms, isLoading, isError } = useGetRooms();
+  const { data: rooms, isLoading } = useGetRooms();
 
   if (isLoading) {
     return <div>Loading...</div>;
