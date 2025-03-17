@@ -1,5 +1,6 @@
 import { db } from "../config/firebase.js";
 const eventsCollection = db.collection("events");
+const meritsCollection = db.collection("merits");
 
 export const eventController = {
   getEvents: async (req, res) => {
@@ -10,7 +11,40 @@ export const eventController = {
         ...doc.data(),
       }));
 
-      res.status(200).json(events);
+      const meritSnapshot = await meritsCollection.get();
+      const merits = meritSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      const eventScanCount = {};
+
+      merits.forEach((merit) => {
+        if (merit.events && Array.isArray(merit.events)) {
+          merit.events.forEach((event) => {
+            const eventName = event.eventName || event.name;
+            if (eventName) {
+              if (eventScanCount[eventName]) {
+                eventScanCount[eventName]++;
+              } else {
+                eventScanCount[eventName] = 1;
+              }
+            }
+          });
+        }
+      });
+
+      console.log(Object.keys(eventScanCount));
+      console.log(eventScanCount["Marketing Workshop"]);
+
+      const eventsWithScanCount = events
+        .map((event) => ({
+          ...event,
+          scanCount: eventScanCount[event.eventName] || 0,
+        }))
+        .sort((a, b) => b.scanCount - a.scanCount);
+
+      res.status(200).json(eventsWithScanCount);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

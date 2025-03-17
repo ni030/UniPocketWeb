@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { config } from "@/lib/config";
 
 export const useGetEvents = () => {
-  const query = useQuery({
+  const query = useQuery<Event[]>({
     queryKey: ["events"],
     queryFn: async () => {
       const response = await axios.get(`${config.API_URL}/events`);

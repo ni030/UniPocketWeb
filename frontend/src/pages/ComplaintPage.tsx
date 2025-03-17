@@ -15,7 +15,7 @@ const ComplaintPage = () => {
   return (
     <div className="max-w-[2400px] mx-auto w-full px-8">
       <UserDialog />
-      <ComplaintDataTable data={complaints} columns={columns} />
+      <ComplaintDataTable data={complaints as Complaint[]} columns={columns} />
     </div>
   );
 };

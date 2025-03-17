@@ -15,6 +15,7 @@ import EventPage from "./pages/EventPage.tsx";
 import FacilityPage from "./pages/FacilityPage.tsx";
 import MeritPage from "./pages/MeritPage.tsx";
 import UserPage from "./pages/UserPage.tsx";
+import DashboardPage from "./pages/DashboardPage.tsx";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -24,7 +25,7 @@ createRoot(document.getElementById("root")!).render(
         <Routes>
           {/* Root Layout */}
           <Route element={<RootLayout />}>
-            <Route index element={<App />} />
+            <Route index element={<DashboardPage />} />
             <Route path="/rooms" element={<RoomPage />} />
             <Route path="/events" element={<EventPage />} />
             <Route path="/complaints" element={<ComplaintPage />} />

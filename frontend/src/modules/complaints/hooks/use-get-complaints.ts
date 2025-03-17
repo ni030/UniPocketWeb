@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { config } from "@/lib/config";
 
 export const useGetComplaints = () => {
-  const query = useQuery({
+  const query = useQuery<Complaint[]>({
     queryKey: ["complaints"],
     queryFn: async () => {
       const response = await axios.get(`${config.API_URL}/complaints`);

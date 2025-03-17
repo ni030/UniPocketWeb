@@ -11,8 +11,6 @@ export const useGetMerits = () => {
         throw new Error("An error occurred while fetching complaints");
       }
 
-      console.log("Mertis fetched", response.data);
-
       return response.data;
     },
   });
