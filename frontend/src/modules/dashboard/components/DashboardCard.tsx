@@ -1,5 +1,4 @@
 import { cn } from "@/lib/utils";
-import AnimatedNumbers from "react-animated-numbers";
 
 interface DashboardCardProps {
   title: string;
@@ -27,15 +26,7 @@ export const DashboardCard = ({
       </div>
       <p className="sm:text-3xl text-xl font-semibold">
         {value ? (
-          <AnimatedNumbers
-            includeComma
-            animateToNumber={value}
-            transitions={(index) => ({
-              type: "spring",
-              staggerChildren: 0.1,
-              duration: index + 3,
-            })}
-          />
+          <span>{value}</span>
         ) : (
           <span className="text-gray-400">0</span>
         )}
