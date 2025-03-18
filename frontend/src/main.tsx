@@ -7,7 +7,7 @@ import { Toaster } from "sonner";
 
 import { QueryProvider } from "./providers/query-provider.tsx";
 
-import { ClerkProvider, SignIn } from '@clerk/clerk-react';
+import { ClerkProvider } from '@clerk/clerk-react';
 
 import ComplaintPage from "./pages/ComplaintPage.tsx";
 import RootLayout from "./layouts/RootLayout.tsx";
@@ -17,8 +17,10 @@ import FacilityPage from "./pages/FacilityPage.tsx";
 import MeritPage from "./pages/MeritPage.tsx";
 import UserPage from "./pages/UserPage.tsx";
 import DashboardPage from "./pages/DashboardPage.tsx";
+import SignInPage from "./pages/SignInPage.tsx";
 import { config } from "./lib/config.ts";
-import SignInPage from "./pages/SigninPage.tsx";
+
+
 
 const PUBLISHABLE_KEY = config.CLERK;
 
