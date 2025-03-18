@@ -2,7 +2,7 @@ import "./index.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
-import { BrowserRouter, Route, Routes } from "react-router";
+import { HashRouter, Route, Routes } from "react-router";
 import { Toaster } from "sonner";
 
 import { QueryProvider } from "./providers/query-provider.tsx";
@@ -33,7 +33,7 @@ createRoot(document.getElementById("root")!).render(
     <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
       <QueryProvider>
         <Toaster richColors />
-        <BrowserRouter>
+        <HashRouter>
           <Routes>
             <Route path="/sign-in" element={<SignInPage />} />
             {/* Root Layout */}
@@ -47,7 +47,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/users" element={<UserPage />} />
             </Route>
           </Routes>
-        </BrowserRouter>
+        </HashRouter>
       </QueryProvider>
     </ClerkProvider>
   </StrictMode>
