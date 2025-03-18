@@ -7,7 +7,6 @@ export const useGetRooms = () => {
     queryKey: ["rooms"],
     queryFn: async () => {
       const response = await axios.get(`${config.API_URL}/rooms`);
-      console.log(response);
 
       if (response.status !== 200) {
         throw new Error("An error occurred while fetching complaints");

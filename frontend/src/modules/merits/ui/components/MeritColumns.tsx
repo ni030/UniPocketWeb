@@ -49,7 +49,6 @@ export const columns: ColumnDef<Merit>[] = [
     },
     cell: ({ row }) => {
       const userId = row.original.user?.userId as string;
-      console.log("userId", userId);
       const { onOpen } = useOpenUserDialog();
 
       const handleOpenDialog = () => {

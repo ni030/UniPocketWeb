@@ -17,6 +17,9 @@ export const meritController = {
             .where("userId", "==", merit.userId)
             .get();
           const user = usersSnapshot.docs[0].data();
+          if (!user) {
+            return res.status(404).json({ error: "User not found" });
+          }
           return { ...merit, user };
         })
       );

@@ -15,8 +15,14 @@ export const roomController = {
             const roomWithUsers = await Promise.all(rooms.map(async (room) => {
                 const usersSnapshot = await usersCollection.where('userId', '==', room.userId).get();
                 const user = usersSnapshot.docs[0].data();
+                if (!user) {
+                    return res.status(404).json({error: 'User not found'});
+                }
                 const meritsSnapshot = await meritCollection.where('userId', '==', room.userId).get();
                 const merit = meritsSnapshot.docs[0].data();
+                if (!merit) {
+                    return res.status(404).json({error: 'Merit not found'});
+                }
                 const ranking = merit.ranking;
                 return {...room, user, ranking};
             }

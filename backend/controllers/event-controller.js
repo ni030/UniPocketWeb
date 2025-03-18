@@ -34,8 +34,6 @@ export const eventController = {
         }
       });
 
-      console.log(Object.keys(eventScanCount));
-      console.log(eventScanCount["Marketing Workshop"]);
 
       const eventsWithScanCount = events
         .map((event) => ({

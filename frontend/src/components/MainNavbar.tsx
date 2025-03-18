@@ -1,6 +1,7 @@
 import { NavLink } from "react-router";
 import { SidebarTrigger } from "./ui/sidebar";
 import { UniversityIcon } from "lucide-react";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/clerk-react";
 
 export const MainNavbar = () => {
   return (
@@ -19,7 +20,14 @@ export const MainNavbar = () => {
         </div>
 
         {/* Auth Side */}
-        <div>Auth Button</div>
+        <div>
+        <SignedOut>
+          <SignInButton />
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
+        </div>
       </div>
     </nav>
   );
